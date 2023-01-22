@@ -17,7 +17,6 @@ runs:
     - name: Install jq
       shell: bash
       run: |
-        |
         which jq > /dev/null
         if [ $? -ne 0 ]; then
           sudo apt-get install jq
