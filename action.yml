@@ -11,10 +11,18 @@
 name: Post JSON to URL
 description: Send JSON data to a specified URL
 
-
 runs:
   using: 'composite'
   steps:
+    - name: Install jq
+      shell: bash
+      run: |
+        |
+        which jq > /dev/null
+        if [ $? -ne 0 ]; then
+          sudo apt-get install jq
+        fi
+
     - name: Validate JSON input
       shell: bash
       env:
