@@ -1,0 +1,54 @@
+# This composite action is used to send JSON data to a specified URL using curl.
+# It requires three input parameters:
+# URL: The URL where the JSON will be sent
+# TOKEN: The bearer authorization token for the API
+# JSON: The JSON data that will be sent to the URL
+#
+# The action first validates the JSON input using the jq command to ensure it is in the proper format.
+# If the JSON input is not valid, the action will exit with an error code and fail.
+# If the JSON input is valid, the action will send the data to the specified URL using curl, and output the response.
+
+name: Post JSON to URL
+description: Send JSON data to a specified URL
+
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Validate JSON input
+      shell: bash
+      env:
+        JSON: ${{ inputs.JSON }}
+      run: |
+        echo $JSON | jq '.' > /dev/null
+        if [ $? -ne 0 ]; then
+            echo "Invalid JSON input"
+            exit 1
+        fi
+    - name: Post JSON to URL
+      shell: bash
+      env:
+        URL: ${{ inputs.URL }}
+        TOKEN: ${{ inputs.TOKEN }}
+        JSON: ${{ inputs.JSON }}
+      run: |
+        curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "$JSON" $URL
+        response=$(curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "$JSON" $URL)
+        echo "response=$response" >> $GITHUB_OUTPUT
+
+inputs:
+  URL:
+    description: 'The URL where the JSON will be sent'
+    required: true
+  TOKEN:
+    description: 'The bearer authorization token for the API'
+    required: true
+  JSON:
+    description: 'The JSON data that will be sent to the URL'
+    required: true
+
+outputs:
+  response:
+    description: 'The response received from the API'
+    value: ${{ steps.Post_JSON_to_URL.outputs.response }}
+
