@@ -1,0 +1,19 @@
+name: Post some JSON to endpoint
+
+on:
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Post JSON to URL
+        uses: anyscripts/post-json@main
+        with:
+          URL: 'https://webhook.site/6877f05b-372b-4ab1-8898-bb8e666bfefa'
+          TOKEN: super_secret_token
+          JSON: '{"data": "something"}'
+
+      - name: Echo response
+        run: echo ${{ steps.post_json.outputs.response }}
