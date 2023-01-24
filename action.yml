@@ -39,7 +39,6 @@ runs:
         TOKEN: ${{ inputs.TOKEN }}
         JSON: ${{ inputs.JSON }}
       run: |
-        curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "$JSON" $URL
         response=$(curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "$JSON" $URL)
         echo "response=$response" >> $GITHUB_OUTPUT
 
