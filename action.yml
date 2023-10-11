@@ -39,15 +39,15 @@ runs:
         TOKEN: ${{ inputs.TOKEN }}
         JSON: ${{ inputs.JSON }}
       run: |
-        response=$(curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "$JSON" $URL)
+        response=$(curl -X POST -H "Content-Type: application/json" -H "Authorization: $AUTHORIZATION" -d "$JSON" $URL)
         echo "response=$response" >> $GITHUB_OUTPUT
 
 inputs:
   URL:
     description: 'The URL where the JSON will be sent'
     required: true
-  TOKEN:
-    description: 'The bearer authorization token for the API'
+  AUTHORIZATION:
+    description: 'The Authorization header content for the API'
     required: true
   JSON:
     description: 'The JSON data that will be sent to the URL'

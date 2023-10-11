@@ -5,7 +5,7 @@ This action allows you to send JSON data to a specified URL using curl.
 ## Inputs
 
 - `URL`: The URL where the JSON will be sent (required)
-- `TOKEN`: The bearer authorization token for the API (required)
+- `AUTHORIZATION`: The authorization header content for the API (required)
 - `JSON`: The JSON data that will be sent to the URL (required)
 
 ## Outputs
@@ -26,7 +26,7 @@ jobs:
         uses: anyscripts/post-json@v1.0.0
         with:
           URL: 'https://api.example.com/endpoint'
-          TOKEN: ${{ secrets.API_TOKEN }}
+          AUTHORIZATION: Bearer ${{ secrets.API_TOKEN }}
           JSON: '{"data": "example"}'
       - name: Echo response
         run: echo ${{ steps.post_json.outputs.response }}
